@@ -298,6 +298,25 @@ class MyGame(arcade.Window):
 
             arcade.play_sound(self.game_over)
 
+        #check if player touches ladder.
+        # Ladder climbing logic
+        ladder_hit_list = arcade.check_for_collision_with_list(self.player_sprite, self.scene["Ladder"])
+
+        # Is the player touching a ladder?
+        if ladder_hit_list:
+            self.player_sprite.change_y = 0  # Stop falling due to gravity
+            self.physics_engine.can_jump = False  # Might need adjustment
+
+            # Vertical ladder movement using up/down keys
+            if arcade.key.UP in self.keys_pressed:
+                self.player_sprite.change_y = PLAYER_MOVEMENT_SPEED
+            elif arcade.key.DOWN in self.keys_pressed:
+                self.player_sprite.change_y = -PLAYER_MOVEMENT_SPEED
+        else:
+            self.physics_engine.can_jump = True # Re-enable jumping off ladders
+
+        print(self.physics_engine.can_jump)    
+        print(self.player_sprite.change_y)
 
 
         # See if the user got to the end of the level
