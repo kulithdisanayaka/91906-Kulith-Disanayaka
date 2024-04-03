@@ -152,6 +152,14 @@ class Player_Character(arcade.Sprite):
             self.texture = self.jumping_textures[frame][
                 self.character_face_direction
             ]
+        #idle animation
+        if self.change_x == 0 and self.change_y == 0:
+            self.cur_texture += 1
+            if self.cur_texture > 16:
+                self.cur_texture = 0
+            self.texture = self.idle_textures[
+                (self.cur_texture // 3)
+            ][self.character_face_direction]
 
 
 
