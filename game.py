@@ -20,6 +20,8 @@ PLAYER_MOVEMENT_SPEED = 8
 GRAVITY = 1.4
 PLAYER_JUMP_SPEED = 20
 
+player_on_ladder = False
+
 
 # Player starting position
 
@@ -38,6 +40,8 @@ LAYER_NAME_COINS = "Coins"
 LAYER_NAME_BACKGROUND = "Background"
 
 LAYER_NAME_DONT_TOUCH = "Don't Touch"
+
+LAYER_NAME_LADDERS = "Ladder"
 
 
 
@@ -109,7 +113,7 @@ class MyGame(arcade.Window):
 
         map_name = f"./maps/map_level_{self.level}.tmx"
 
-
+        
 
         # Layer Specific Options for the Tilemap
 
@@ -131,6 +135,10 @@ class MyGame(arcade.Window):
 
                 "use_spatial_hash": True,
             },
+
+            LAYER_NAME_LADDERS: {
+                "use_spatial_hash": True,
+            }
         }
 
         # Load in TileMap
@@ -178,6 +186,7 @@ class MyGame(arcade.Window):
             self.player_sprite,
             gravity_constant=GRAVITY,
             walls=self.scene[LAYER_NAME_PLATFORMS],
+            ladders=self.scene[LAYER_NAME_LADDERS],
         )
 
     def on_draw(self):
@@ -209,9 +218,14 @@ class MyGame(arcade.Window):
         """Called whenever a key is pressed."""
 
         if key == arcade.key.UP or key == arcade.key.W:
-            if self.physics_engine.can_jump():
+            if self.physics_engine.is_on_ladder():
+                self.player_sprite.change_y = PLAYER_MOVEMENT_SPEED
+            elif self.physics_engine.can_jump():
                 self.player_sprite.change_y = PLAYER_JUMP_SPEED
                 arcade.play_sound(self.jump_sound)
+        elif key == arcade.key.DOWN or key == arcade.key.S:
+            if self.physics_engine.is_on_ladder():
+                self.player_sprite.change_y = -PLAYER_MOVEMENT_SPEED
         elif key == arcade.key.LEFT or key == arcade.key.A:
             self.player_sprite.change_x = -PLAYER_MOVEMENT_SPEED
         elif key == arcade.key.RIGHT or key == arcade.key.D:
@@ -219,8 +233,13 @@ class MyGame(arcade.Window):
 
     def on_key_release(self, key, modifiers):
         """Called when the user releases a key."""
-
-        if key == arcade.key.LEFT or key == arcade.key.A:
+        if key == arcade.key.UP or key == arcade.key.W:
+            if self.physics_engine.is_on_ladder():
+                self.player_sprite.change_y = 0
+        elif key == arcade.key.DOWN or key == arcade.key.S:
+            if self.physics_engine.is_on_ladder():
+                self.player_sprite.change_y = 0
+        elif key == arcade.key.LEFT or key == arcade.key.A:
             self.player_sprite.change_x = 0
         elif key == arcade.key.RIGHT or key == arcade.key.D:
             self.player_sprite.change_x = 0
@@ -297,27 +316,6 @@ class MyGame(arcade.Window):
 
 
             arcade.play_sound(self.game_over)
-
-        #check if player touches ladder.
-        # Ladder climbing logic
-        ladder_hit_list = arcade.check_for_collision_with_list(self.player_sprite, self.scene["Ladder"])
-
-        # Is the player touching a ladder?
-        if ladder_hit_list:
-            self.player_sprite.change_y = 0  # Stop falling due to gravity
-            self.physics_engine.can_jump = False  # Might need adjustment
-
-            # Vertical ladder movement using up/down keys
-            if arcade.key.UP in self.keys_pressed:
-                self.player_sprite.change_y = PLAYER_MOVEMENT_SPEED
-            elif arcade.key.DOWN in self.keys_pressed:
-                self.player_sprite.change_y = -PLAYER_MOVEMENT_SPEED
-        else:
-            self.physics_engine.can_jump = True # Re-enable jumping off ladders
-
-        print(self.physics_engine.can_jump)    
-        print(self.player_sprite.change_y)
-
 
         # See if the user got to the end of the level
 
