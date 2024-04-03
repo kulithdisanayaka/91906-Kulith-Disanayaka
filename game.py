@@ -101,11 +101,11 @@ class Player_Character(arcade.Sprite):
             texture = load_texture_pair(f"{main_path}run/run ({i}).png")
             self.walk_textures.append(texture)
 
-        # load texture for walking
+        # load texture for jumping
         self.jumping_textures = []
-        for i in range(8):
-            texture = load_texture_pair(f"{main_path}\King Human\walk{i}.png")
-            self.walk_textures.append(texture)
+        for i in range(12):
+            texture = load_texture_pair(f"{main_path}\jump\jump ({i}).png")
+            self.jumping_textures.append(texture)
 
         # Load textures for climbing
         # self.climbing_textures = []
@@ -144,14 +144,14 @@ class Player_Character(arcade.Sprite):
                 self.character_face_direction
             ]
         # Jumping and fall animation
-        if self.change_y > 0 and self.change_x == 0:
-            self.texture = self.jump_texture_pair[self.character_face_direction]
-            self.hit_box = self.texture.hit_box_points
-            return
-        elif self.change_y < 0 and self.change_x == 0:
-            self.texture = self.fall_texture_pair[self.character_face_direction]
-            self.hit_box = self.texture.hit_box_points
-            return
+        if self.change_y > 1:
+            self.cur_texture += 1
+            if self.cur_texture > 11:
+                self.cur_texture = 0
+            frame = self.cur_texture // 1
+            self.texture = self.jumping_textures[frame][
+                self.character_face_direction
+            ]
 
 
 
