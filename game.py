@@ -45,6 +45,7 @@ LAYER_NAME_LADDERS = "Ladder"
 
 
 
+
 class MyGame(arcade.Window):
     """
     Main application class.
