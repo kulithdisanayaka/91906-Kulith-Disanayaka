@@ -7,6 +7,7 @@ import math
 import os
 
 import arcade
+import time
 
 # Constants
 SCREEN_WIDTH = 1000
@@ -276,10 +277,10 @@ class MyGame(arcade.Window):
         self.level = 1
 
         # Load sounds
-        self.collect_coin_sound = arcade.load_sound(":resources:sounds/coin1.wav")
+        self.collect_coin_sound = arcade.load_sound("sound/collectcoin-6075.mp3")
         self.jump_sound = arcade.load_sound(":resources:sounds/jump1.wav")
-        self.game_over = arcade.load_sound(":resources:sounds/gameover1.wav")
-        self.shoot_sound = arcade.load_sound(":resources:sounds/hurt5.wav")
+        self.game_over = arcade.load_sound("sound/death.mp3")
+        self.shoot_sound = arcade.load_sound("sound/knife-slice-41231.mp3")
         self.hit_sound = arcade.load_sound(":resources:sounds/hit5.wav")
 
     def setup(self):
