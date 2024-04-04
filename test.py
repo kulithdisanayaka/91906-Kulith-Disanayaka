@@ -636,13 +636,18 @@ class MyGame(arcade.Window):
 
         if self.player_sprite.center_y < -100:
 
+            arcade.play_sound(self.game_over)
+            
+            time.sleep(1)
+
+
             self.player_sprite.center_x = PLAYER_START_X
 
             self.player_sprite.center_y = PLAYER_START_Y
 
 
 
-            arcade.play_sound(self.game_over)
+            
 
 
 
@@ -653,6 +658,9 @@ class MyGame(arcade.Window):
             self.player_sprite, self.scene[LAYER_NAME_DONT_TOUCH]
 
         ):
+            arcade.play_sound(self.game_over)
+
+            time.sleep(1)
 
             self.player_sprite.change_x = 0
 
@@ -664,7 +672,6 @@ class MyGame(arcade.Window):
 
 
 
-            arcade.play_sound(self.game_over)
 
         # Position the camera
         self.center_camera_to_player()
