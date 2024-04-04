@@ -12,7 +12,7 @@ import time
 # Constants
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 650
-SCREEN_TITLE = "Platformer"
+SCREEN_TITLE = "Tour OF Samurai"
 
 # Constants used to scale our sprites from their original size
 TILE_SCALING = 1.5
