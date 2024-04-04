@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="1">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="10" nextobjectid="7">
  <tileset firstgid="1" source="2.1/2.1.tsx"/>
  <tileset firstgid="83" source="2.1/2.3.tsx"/>
  <tileset firstgid="138" source="2.1/2.2.tsx"/>
@@ -107,14 +107,14 @@
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,123,0,0,0,0,0,0,0,0,0,0,0,0,137,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,137,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,33,15,15,34,0,0,0,0,219,28,28,28,28,28,28,28,28,28,28,28,0,
 0,0,0,0,0,0,0,0,0,31,15,15,15,34,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,31,15,15,15,31,34,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 1,2,3,4,0,0,0,0,0,31,15,15,15,15,31,34,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,31,31,31,31,31,31,31,34,219,28,28,28,28,28,28,28,28,28,28,28,28,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 1,2,3,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,33,18,0,0,0,18,34,0,0,0,0,0,0,0,0,
@@ -131,7 +131,7 @@
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,123,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -151,7 +151,50 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="7" name="Ladder" width="30" height="20">
+ <objectgroup id="8" name="Enemies">
+  <object id="1" x="753.333" y="218.667">
+   <properties>
+    <property name="boundary_left" type="int" value="850"/>
+    <property name="boundary_right" type="int" value="1300"/>
+    <property name="change_x" type="int" value="1"/>
+    <property name="type" value="wolf"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="2" x="685.333" y="90.6667">
+   <properties>
+    <property name="boundary_left" type="int" value="850"/>
+    <property name="boundary_right" type="int" value="1100"/>
+    <property name="change_x" type="int" value="1"/>
+    <property name="type" value="wolf"/>
+   </properties>
+   <point/>
+  </object>
+ </objectgroup>
+ <objectgroup id="9" name="Moving Platforms">
+  <object id="4" gid="176" x="225" y="320.667" width="32" height="32">
+   <properties>
+    <property name="boundary_bottom" type="int" value="400"/>
+    <property name="boundary_top" type="int" value="800"/>
+    <property name="change_y" value="1"/>
+   </properties>
+  </object>
+  <object id="5" gid="176" x="193.333" y="320.667" width="32" height="32">
+   <properties>
+    <property name="boundary_bottom" type="int" value="400"/>
+    <property name="boundary_top" type="int" value="800"/>
+    <property name="change_y" value="1"/>
+   </properties>
+  </object>
+  <object id="6" gid="176" x="161.333" y="320.667" width="32" height="32">
+   <properties>
+    <property name="boundary_bottom" type="int" value="400"/>
+    <property name="boundary_top" type="int" value="800"/>
+    <property name="change_y" value="1"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <layer id="7" name="Ladders" width="30" height="20">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

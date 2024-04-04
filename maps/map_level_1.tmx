@@ -133,7 +133,7 @@
     <property name="boundary_left" type="int" value="750"/>
     <property name="boundary_right" type="int" value="975"/>
     <property name="change_x" type="int" value="1"/>
-    <property name="type" value="robot"/>
+    <property name="type" value="wolf"/>
    </properties>
    <point/>
   </object>

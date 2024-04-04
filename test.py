@@ -15,13 +15,13 @@ SCREEN_TITLE = "Platformer"
 
 # Constants used to scale our sprites from their original size
 TILE_SCALING = 1.5
-CHARACTER_SCALING = 0.5
+CHARACTER_SCALING = 0.8
 COIN_SCALING = 0.5
 SPRITE_PIXEL_SIZE = 32
 GRID_PIXEL_SIZE = SPRITE_PIXEL_SIZE * TILE_SCALING
 
 # Shooting Constants
-SPRITE_SCALING_LASER = 0.8
+SPRITE_SCALING_LASER = 0.09
 SHOOT_SPEED = 15
 BULLET_SPEED = 12
 BULLET_DAMAGE = 25
@@ -54,7 +54,7 @@ LAYER_NAME_LADDERS = "Ladders"
 LAYER_NAME_PLAYER = "Player"
 LAYER_NAME_ENEMIES = "Enemies"
 LAYER_NAME_BULLETS = "Bullets"
-
+LAYER_NAME_DONT_TOUCH = "Don't Touch"
 
 def load_texture_pair(filename):
     """
@@ -155,6 +155,15 @@ class ZombieEnemy(Enemy):
         super().__init__("zombie", "zombie")
 
         self.health = 50
+
+class WolfEnemy(Enemy):
+    def __init__(self):
+
+        # Set up parent class
+        super().__init__("wolf", "wolf")
+
+        self.health = 50
+
 
 
 class PlayerCharacter(Entity):
@@ -266,7 +275,7 @@ class MyGame(arcade.Window):
         # Level
         self.level = 1
 
-        # Load sounds
+        # Load sounds\
         self.collect_coin_sound = arcade.load_sound(":resources:sounds/coin1.wav")
         self.jump_sound = arcade.load_sound(":resources:sounds/jump1.wav")
         self.game_over = arcade.load_sound(":resources:sounds/gameover1.wav")
@@ -297,6 +306,9 @@ class MyGame(arcade.Window):
             LAYER_NAME_COINS: {
                 "use_spatial_hash": True,
             },
+            LAYER_NAME_DONT_TOUCH: {
+                "use_spatial_hash": True,
+            }
         }
 
         # Load in TileMap
@@ -334,6 +346,8 @@ class MyGame(arcade.Window):
                 enemy = RobotEnemy()
             elif enemy_type == "zombie":
                 enemy = ZombieEnemy()
+            elif enemy_type == "wolf":
+                enemy = WolfEnemy()
             enemy.center_x = math.floor(
                 cartesian[0] * TILE_SCALING * self.tile_map.tile_width
             )
@@ -501,7 +515,7 @@ class MyGame(arcade.Window):
             if self.shoot_pressed:
                 arcade.play_sound(self.shoot_sound)
                 bullet = arcade.Sprite(
-                    ":resources:images/space_shooter/laserBlue01.png",
+                    "assets/dagger/dagger.png",
                     SPRITE_SCALING_LASER,
                 )
 
@@ -511,7 +525,7 @@ class MyGame(arcade.Window):
                     bullet.change_x = -BULLET_SPEED
 
                 bullet.center_x = self.player_sprite.center_x
-                bullet.center_y = self.player_sprite.center_y
+                bullet.center_y = self.player_sprite.center_y - 10
 
                 self.scene.add_sprite(LAYER_NAME_BULLETS, bullet)
 
@@ -617,8 +631,52 @@ class MyGame(arcade.Window):
                 collision.remove_from_sprite_lists()
                 arcade.play_sound(self.collect_coin_sound)
 
+        # Did the player fall off the map?
+
+        if self.player_sprite.center_y < -100:
+
+            self.player_sprite.center_x = PLAYER_START_X
+
+            self.player_sprite.center_y = PLAYER_START_Y
+
+
+
+            arcade.play_sound(self.game_over)
+
+
+
+        # Did the player touch something they should not?
+
+        if arcade.check_for_collision_with_list(
+
+            self.player_sprite, self.scene[LAYER_NAME_DONT_TOUCH]
+
+        ):
+
+            self.player_sprite.change_x = 0
+
+            self.player_sprite.change_y = 0
+
+            self.player_sprite.center_x = PLAYER_START_X
+
+            self.player_sprite.center_y = PLAYER_START_Y
+
+
+
+            arcade.play_sound(self.game_over)
+
         # Position the camera
         self.center_camera_to_player()
+
+        # See if the user got to the end of the level
+        if self.player_sprite.center_x >= self.end_of_map:
+            # Advance to the next level
+            self.level += 1
+            # Make sure to keep the score from this level when setting up the next level
+            self.reset_score = False
+            # Load the next level
+            self.setup()
+
 
 
 def main():
