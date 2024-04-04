@@ -282,6 +282,7 @@ class MyGame(arcade.Window):
         self.game_over = arcade.load_sound("sound/death.mp3")
         self.shoot_sound = arcade.load_sound("sound/knife-slice-41231.mp3")
         self.hit_sound = arcade.load_sound(":resources:sounds/hit5.wav")
+        self.game_sound = arcade.load_sound("sound/truth-in-the-stones-kevin-macleod-main-version-06-13-10879.mp3")
 
     def setup(self):
         """Set up the game here. Call this function to restart the game."""
@@ -325,6 +326,9 @@ class MyGame(arcade.Window):
         # Shooting mechanics
         self.can_shoot = True
         self.shoot_timer = 0
+
+        #Play background music
+        arcade.play_sound(self.game_sound)        
 
         # Set up the player, specifically placing it at these coordinates.
         self.player_sprite = PlayerCharacter()
