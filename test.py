@@ -278,7 +278,7 @@ class MyGame(arcade.Window):
 
         # Load sounds
         self.collect_coin_sound = arcade.load_sound("sound/collectcoin-6075.mp3")
-        self.jump_sound = arcade.load_sound(":resources:sounds/jump1.wav")
+        self.jump_sound = arcade.load_sound("sound/jump.mp3")
         self.game_over = arcade.load_sound("sound/death.mp3")
         self.shoot_sound = arcade.load_sound("sound/knife-slice-41231.mp3")
         self.hit_sound = arcade.load_sound(":resources:sounds/hit5.wav")
