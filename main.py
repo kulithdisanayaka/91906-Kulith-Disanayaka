@@ -1,7 +1,7 @@
 """
-Platformer Game
+Tour OF Samurai
 
-python -m arcade.examples.platform_tutorial.11_animate_character
+
 """
 import math
 import os
@@ -9,37 +9,36 @@ import os
 import arcade
 import time
 
-# Constants
+# screen resolution
 SCREEN_WIDTH = 1000
-SCREEN_HEIGHT = 650
+SCREEN_HEIGHT = 600
 SCREEN_TITLE = "Tour OF Samurai"
 
-# Constants used to scale our sprites from their original size
+# Constants used to scale sprites
 TILE_SCALING = 1.5
 CHARACTER_SCALING = 0.8
 COIN_SCALING = 0.5
 SPRITE_PIXEL_SIZE = 32
 GRID_PIXEL_SIZE = SPRITE_PIXEL_SIZE * TILE_SCALING
 
-# Shooting Constants
+# Shooting 
 SPRITE_SCALING_LASER = 0.09
 SHOOT_SPEED = 15
 BULLET_SPEED = 12
 BULLET_DAMAGE = 25
 
-# Movement speed of player, in pixels per frame
-PLAYER_MOVEMENT_SPEED = 8
+# player moment speed
+PLAYER_MOVEMENT_SPEED = 6
 GRAVITY = 1.4
 PLAYER_JUMP_SPEED = 20
 
-# How many pixels to keep as a minimum margin between the character
-# and the edge of the screen.
+#margins
 LEFT_VIEWPORT_MARGIN = 200
 RIGHT_VIEWPORT_MARGIN = 200
 BOTTOM_VIEWPORT_MARGIN = 150
 TOP_VIEWPORT_MARGIN = 100
 
-# Player starting position
+# Player starting place
 PLAYER_START_X = 64
 PLAYER_START_Y = 450
 
@@ -56,6 +55,8 @@ LAYER_NAME_PLAYER = "Player"
 LAYER_NAME_ENEMIES = "Enemies"
 LAYER_NAME_BULLETS = "Bullets"
 LAYER_NAME_DONT_TOUCH = "Don't Touch"
+
+sound_played = False
 
 def load_texture_pair(filename):
     """
@@ -74,7 +75,7 @@ class Entity(arcade.Sprite):
         # Default to facing right
         self.facing_direction = RIGHT_FACING
 
-        # Used for image sequences
+        #  Image sequences
         self.cur_texture = 0
         self.scale = CHARACTER_SCALING
 
@@ -84,32 +85,30 @@ class Entity(arcade.Sprite):
         self.jump_texture_pair = load_texture_pair(f"{main_path}_jump.png")
         self.fall_texture_pair = load_texture_pair(f"{main_path}_fall.png")
 
-        # Load textures for walking
+        # Textures for walking
         self.walk_textures = []
         for i in range(8):
             texture = load_texture_pair(f"{main_path}_walk{i}.png")
             self.walk_textures.append(texture)
 
-        # Load textures for climbing
+        # Textures for climbing
         self.climbing_textures = []
         texture = arcade.load_texture(f"{main_path}_climb0.png")
         self.climbing_textures.append(texture)
         texture = arcade.load_texture(f"{main_path}_climb1.png")
         self.climbing_textures.append(texture)
 
-        # Set the initial texture
+        # Initial texture
         self.texture = self.idle_texture_pair[0]
 
-        # Hit box will be set based on the first image used. If you want to specify
-        # a different hit box, you can do it like the code below.
-        # self.set_hit_box([[-22, -64], [22, -64], [22, 28], [-22, 28]])
+        
         self.set_hit_box(self.texture.hit_box_points)
 
 
 class Enemy(Entity):
     def __init__(self, name_folder, name_file):
 
-        # Setup parent class
+        # Parent class
         super().__init__(name_folder, name_file)
 
         self.should_update_walk = 0
@@ -140,27 +139,11 @@ class Enemy(Entity):
         self.should_update_walk += 1
 
 
-class RobotEnemy(Enemy):
-    def __init__(self):
-
-        # Set up parent class
-        super().__init__("robot", "robot")
-
-        self.health = 100
-
-
-class ZombieEnemy(Enemy):
-    def __init__(self):
-
-        # Set up parent class
-        super().__init__("zombie", "zombie")
-
-        self.health = 50
 
 class WolfEnemy(Enemy):
     def __init__(self):
 
-        # Set up parent class
+        # Parent class
         super().__init__("wolf", "wolf")
 
         self.health = 50
@@ -172,17 +155,17 @@ class PlayerCharacter(Entity):
 
     def __init__(self):
 
-        # Set up parent class
+        # Parent class
         super().__init__("Samurai", "Samurai")
 
-        # Track our state
+        # Track state
         self.jumping = False
         self.climbing = False
         self.is_on_ladder = False
 
     def update_animation(self, delta_time: float = 1 / 60):
 
-        # Figure out if we need to flip face left or right
+        #  flip face left or right
         if self.change_x < 0 and self.facing_direction == RIGHT_FACING:
             self.facing_direction = LEFT_FACING
         elif self.change_x > 0 and self.facing_direction == LEFT_FACING:
@@ -231,7 +214,7 @@ class MyGame(arcade.Window):
         Initializer for the game
         """
 
-        # Call the parent class and set up the window
+        # Set up the window with parent class
         super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
 
         # Set the path to start with this program
@@ -246,16 +229,16 @@ class MyGame(arcade.Window):
         self.shoot_pressed = False
         self.jump_needs_reset = False
 
-        # Our TileMap Object
+        # TileMap Object
         self.tile_map = None
 
-        # Our Scene Object
+        # Scene Object
         self.scene = None
 
         # Separate variable that holds the player sprite
         self.player_sprite = None
 
-        # Our 'physics' engine
+        # physics' engine
         self.physics_engine = None
 
         # A Camera that can be used for scrolling the screen
@@ -266,7 +249,7 @@ class MyGame(arcade.Window):
 
         self.end_of_map = 0
 
-        # Keep track of the score
+        # Score track
         self.score = 0
 
         # Shooting mechanics
@@ -294,7 +277,7 @@ class MyGame(arcade.Window):
         # Map name
         map_name = f"./maps/map_level_{self.level}.tmx"
 
-        # Layer Specific Options for the Tilemap
+        # Layer Specific 
         layer_options = {
             LAYER_NAME_PLATFORMS: {
                 "use_spatial_hash": True,
@@ -316,8 +299,7 @@ class MyGame(arcade.Window):
         # Load in TileMap
         self.tile_map = arcade.load_tilemap(map_name, TILE_SCALING, layer_options)
 
-        # Initiate New Scene with our TileMap, this will automatically add all layers
-        # from the map as SpriteLists in the scene in the proper order.
+        #proper order of the maps
         self.scene = arcade.Scene.from_tilemap(self.tile_map)
 
         # Keep track of the score
@@ -328,9 +310,10 @@ class MyGame(arcade.Window):
         self.shoot_timer = 0
 
         #Play background music
-        arcade.play_sound(self.game_sound)        
+        if sound_played == False:
+            arcade.play_sound(self.game_sound)        
 
-        # Set up the player, specifically placing it at these coordinates.
+        # Set up the player, 
         self.player_sprite = PlayerCharacter()
         self.player_sprite.center_x = PLAYER_START_X
         self.player_sprite.center_y = PLAYER_START_Y
@@ -347,11 +330,8 @@ class MyGame(arcade.Window):
                 my_object.shape[0], my_object.shape[1]
             )
             enemy_type = my_object.properties["type"]
-            if enemy_type == "robot":
-                enemy = RobotEnemy()
-            elif enemy_type == "zombie":
-                enemy = ZombieEnemy()
-            elif enemy_type == "wolf":
+           
+            if enemy_type == "wolf":
                 enemy = WolfEnemy()
             enemy.center_x = math.floor(
                 cartesian[0] * TILE_SCALING * self.tile_map.tile_width
@@ -367,15 +347,15 @@ class MyGame(arcade.Window):
                 enemy.change_x = my_object.properties["change_x"]
             self.scene.add_sprite(LAYER_NAME_ENEMIES, enemy)
 
-        # Add bullet spritelist to Scene
+        # Add bullet spritelist 
         self.scene.add_sprite_list(LAYER_NAME_BULLETS)
 
-        # --- Other stuff
+       
         # Set the background color
         if self.tile_map.background_color:
             arcade.set_background_color(self.tile_map.background_color)
 
-        # Create the 'physics engine'
+        # physics engine
         self.physics_engine = arcade.PhysicsEnginePlatformer(
             self.player_sprite,
             platforms=self.scene[LAYER_NAME_MOVING_PLATFORMS],
@@ -393,13 +373,13 @@ class MyGame(arcade.Window):
         # Activate the game camera
         self.camera.use()
 
-        # Draw our Scene
+        # Draw the Scene
         self.scene.draw()
 
         # Activate the GUI camera before drawing GUI elements
         self.gui_camera.use()
 
-        # Draw our score on the screen, scrolling it with the viewport
+        # Draw the score on the screen, scrolling it with the viewport
         score_text = f"Score: {self.score}"
         arcade.draw_text(
             score_text,
@@ -408,12 +388,6 @@ class MyGame(arcade.Window):
             arcade.csscolor.BLACK,
             18,
         )
-
-        # Draw hit boxes.
-        # for wall in self.wall_list:
-        #     wall.draw_hit_box(arcade.color.BLACK, 3)
-        #
-        # self.player_sprite.draw_hit_box(arcade.color.RED, 3)
 
     def process_keychange(self):
         """
@@ -500,7 +474,7 @@ class MyGame(arcade.Window):
     def on_update(self, delta_time):
         """Movement and game logic"""
 
-        # Move the player with the physics engine
+        # Move the player using physics engine
         self.physics_engine.update()
 
         # Update animations
@@ -552,7 +526,7 @@ class MyGame(arcade.Window):
             ],
         )
 
-        # Update moving platforms, enemies, and bullets
+        # Update moving platforms, enemies, and bullet
         self.scene.update(
             [LAYER_NAME_MOVING_PLATFORMS, LAYER_NAME_ENEMIES, LAYER_NAME_BULLETS]
         )
@@ -591,14 +565,14 @@ class MyGame(arcade.Window):
                         self.scene[LAYER_NAME_ENEMIES]
                         in collision.sprite_lists
                     ):
-                        # The collision was with an enemy
+                        # Collision was with an enemy
                         collision.health -= BULLET_DAMAGE
 
                         if collision.health <= 0:
                             collision.remove_from_sprite_lists()
                             self.score += 100
 
-                        # Hit sound
+                        # Hiting sound
                         arcade.play_sound(self.hit_sound)
 
                 return
@@ -617,7 +591,7 @@ class MyGame(arcade.Window):
             ],
         )
 
-        # Loop through each coin we hit (if any) and remove it
+        # Loop through each coin 
         for collision in player_collision_list:
 
             if self.scene[LAYER_NAME_ENEMIES] in collision.sprite_lists:
@@ -649,13 +623,14 @@ class MyGame(arcade.Window):
 
             self.player_sprite.center_y = PLAYER_START_Y
 
+        sound_played = True
 
 
             
 
 
 
-        # Did the player touch something they should not?
+        # did the player touch dont touch layer
 
         if arcade.check_for_collision_with_list(
 
@@ -663,6 +638,8 @@ class MyGame(arcade.Window):
 
         ):
             arcade.play_sound(self.game_over)
+
+            sound_played = True
 
             time.sleep(1)
 
