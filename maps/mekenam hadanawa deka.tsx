@@ -2,18 +2,18 @@
 <tileset version="1.10" tiledversion="1.10.2" name="mekenam hadanawa deka" tilewidth="576" tileheight="324" tilecount="5" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="0">
-  <image width="576" height="324" source="C:/Users/disak/Downloads/craftpix-net-362692-free-green-zone-tileset-pixel-art/2 Background/Night/1.png"/>
+  <image width="576" height="324" source="tile set/craftpix-net-362692-free-green-zone-tileset-pixel-art/2 Background/Night/1.png"/>
  </tile>
  <tile id="1">
-  <image width="576" height="324" source="C:/Users/disak/Downloads/craftpix-net-362692-free-green-zone-tileset-pixel-art/2 Background/Night/2.png"/>
+  <image width="576" height="324" source="tile set/craftpix-net-362692-free-green-zone-tileset-pixel-art/2 Background/Night/2.png"/>
  </tile>
  <tile id="2">
-  <image width="576" height="324" source="C:/Users/disak/Downloads/craftpix-net-362692-free-green-zone-tileset-pixel-art/2 Background/Night/3.png"/>
+  <image width="576" height="324" source="tile set/craftpix-net-362692-free-green-zone-tileset-pixel-art/2 Background/Night/3.png"/>
  </tile>
  <tile id="3">
-  <image width="576" height="324" source="C:/Users/disak/Downloads/craftpix-net-362692-free-green-zone-tileset-pixel-art/2 Background/Night/4.png"/>
+  <image width="576" height="324" source="tile set/craftpix-net-362692-free-green-zone-tileset-pixel-art/2 Background/Night/4.png"/>
  </tile>
  <tile id="4">
-  <image width="576" height="324" source="C:/Users/disak/Downloads/craftpix-net-362692-free-green-zone-tileset-pixel-art/2 Background/Night/5.png"/>
+  <image width="576" height="324" source="tile set/craftpix-net-362692-free-green-zone-tileset-pixel-art/2 Background/Night/5.png"/>
  </tile>
 </tileset>
